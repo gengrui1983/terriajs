@@ -14,6 +14,7 @@ function MenuButton(props) {
         <div>
             <a className={Styles.btnAboutLink}
                href={props.href}
+               onClick={props.onClick}
                target={props.href !== '#' ? '_blank' : undefined}
                title={props.caption}>
                 <span>{props.caption}</span>

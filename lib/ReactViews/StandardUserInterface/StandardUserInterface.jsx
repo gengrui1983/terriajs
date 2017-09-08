@@ -5,6 +5,7 @@ import arrayContains from '../../Core/arrayContains';
 import Branding from './../SidePanel/Branding.jsx';
 import DragDropFile from './../DragDropFile.jsx';
 import ExplorerWindow from './../ExplorerWindow/ExplorerWindow.jsx';
+import CrimeWindow from './../CrimeWindow/CrimeWindow.jsx';
 import FeatureInfoPanel from './../FeatureInfo/FeatureInfoPanel.jsx';
 import FeedbackForm from '../Feedback/FeedbackForm.jsx';
 import MapColumn from './MapColumn.jsx';
@@ -38,6 +39,7 @@ const StandardUserInterface = createReactClass({
          */
         allBaseMaps: PropTypes.array,
         viewState: PropTypes.object.isRequired,
+        crimeState: PropTypes.object.isRequired,
         minimumLargeScreenWidth: PropTypes.number,
         version: PropTypes.string,
         children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.element), PropTypes.element])
@@ -124,6 +126,7 @@ const StandardUserInterface = createReactClass({
                             <MapColumn terria={terria} viewState={this.props.viewState} />
                             <main>
                                 <ExplorerWindow terria={terria} viewState={this.props.viewState}/>
+                                <CrimeWindow terria={terria} viewState={this.props.viewState} crimeState={this.props.crimeState}/>
                                 <If condition={this.props.terria.configParameters.experimentalFeatures && !this.props.viewState.hideMapUi()}>
                                     <ExperimentalFeatures terria={terria}
                                                           viewState={this.props.viewState}
