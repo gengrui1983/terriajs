@@ -2,6 +2,8 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import 'react-input-range/lib/css/index.css';
+import InputRange from 'react-input-range';
 import ko from 'terriajs-cesium/Source/ThirdParty/knockout';
 
 import ObserveModelMixin from '../ObserveModelMixin';
@@ -22,13 +24,23 @@ const CrimeWindow = createReactClass({
 
     getInitialState() {
         return {
-            isMounted: false
+            isMounted: false,
+            years: {
+                min: 5,
+                max: 10,
+            },
         };
     },
 
     close() {
         this.props.crimeState.crimePanelIsVisible = false;
         this.props.viewState.switchMobileView('nowViewing');
+    },
+
+    handleChange: function (event) {
+        this.setState({
+            text: event.target.value
+        });
     },
 
     componentWillMount() {
@@ -108,6 +120,15 @@ const CrimeWindow = createReactClass({
                      aria-labelledby="modalTitle"
                      aria-describedby="modalDescription"
                      role="dialog">
+
+                    <InputRange
+                        maxValue={20}
+                        minValue={0}
+                        value={this.state.years}
+                        draggableTrack={true}
+                        disabled={false}
+                        onChange={value => this.setState({years: value})}/>
+
                     <button type='button'
                             onClick={this.close}
                             className={Styles.btnCloseModal}
