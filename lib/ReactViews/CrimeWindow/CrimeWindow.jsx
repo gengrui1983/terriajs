@@ -4,6 +4,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import 'react-input-range/lib/css/index.css';
 import InputRange from 'react-input-range';
+import { Combobox } from 'react-input-enhancements';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import Col from 'react-bootstrap/lib/Col';
+
 import ko from 'terriajs-cesium/Source/ThirdParty/knockout';
 
 import ObserveModelMixin from '../ObserveModelMixin';
@@ -29,6 +35,8 @@ const CrimeWindow = createReactClass({
                 min: 5,
                 max: 10,
             },
+            modelNames: ['Model 1', 'Uni 2', 'China', 'Regression', 'Bali', 'Cheese'],
+            value: 'value--Model 1',
         };
     },
 
@@ -41,6 +49,10 @@ const CrimeWindow = createReactClass({
         this.setState({
             text: event.target.value
         });
+    },
+
+    onChange() {
+
     },
 
     componentWillMount() {
@@ -106,6 +118,8 @@ const CrimeWindow = createReactClass({
 
     render() {
         const visible = this.state.visible;
+        const modelNames = this.state.modelNames;
+        const value = this.state.value;
 
         return visible ? (
             <div className={Styles.modalWrapper}
@@ -128,6 +142,28 @@ const CrimeWindow = createReactClass({
                         draggableTrack={true}
                         disabled={false}
                         onChange={value => this.setState({years: value})}/>
+
+                    <FormGroup>
+                        <Col componentClass={ControlLabel} xs={3}>
+                            Models:
+                        </Col>
+                        <Col xs={6}>
+                            <Combobox
+                                value={value}
+                                options={modelNames}
+                                onSelect={this.onChange}
+                                autosize
+                            >
+                                {inputProps =>
+                                    <FormControl
+                                        {...inputProps}
+                                        type='text'
+                                        placeholder='No Model'
+                                    />
+                                }
+                            </Combobox>
+                        </Col>
+                    </FormGroup>
 
                     <button type='button'
                             onClick={this.close}
