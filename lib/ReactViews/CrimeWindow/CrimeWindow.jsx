@@ -120,6 +120,8 @@ const CrimeWindow = createReactClass({
         const visible = this.state.visible;
         const modelNames = this.state.modelNames;
         const value = this.state.value;
+        const featureName = this.props.terria.pickedFeatures && this.props.terria.pickedFeatures.features.length > 0 ?
+            this.props.terria.pickedFeatures.features[0].data.properties['SA2_NAME11'] : 'Not Selected';
 
         return visible ? (
             <div className={Styles.modalWrapper}
@@ -164,6 +166,8 @@ const CrimeWindow = createReactClass({
                             </Combobox>
                         </Col>
                     </FormGroup>
+
+                    <text>{featureName}</text>
 
                     <button type='button'
                             onClick={this.close}
