@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import 'react-input-range/lib/css/index.css';
 import InputRange from 'react-input-range';
-import { Combobox } from 'react-input-enhancements';
+import {Combobox} from 'react-input-enhancements';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Col from 'react-bootstrap/lib/Col';
 
 import ko from 'terriajs-cesium/Source/ThirdParty/knockout';
-
+import $ from 'jquery';
 import ObserveModelMixin from '../ObserveModelMixin';
 
 import Styles from './crime-window.scss';
@@ -35,14 +35,47 @@ const CrimeWindow = createReactClass({
                 min: 5,
                 max: 10,
             },
-            modelNames: ['Model 1', 'Uni 2', 'China', 'Regression', 'Bali', 'Cheese'],
-            value: 'value--Model 1',
+            modelNames: ['Bayesian Linear Regression',
+                'Stan Bayesian Linear Regression',
+                'Stan Spatial GP',
+                'Gaussian Process',
+                'Linear Regression'],
+            modelSelected: 'Bayesian Linear Regression',
         };
     },
 
     close() {
         this.props.crimeState.crimePanelIsVisible = false;
         this.props.viewState.switchMobileView('nowViewing');
+        const get_data = {};
+        get_data.modelSelected = this.state.modelSelected;
+
+        $.ajax({
+            url: "http://127.0.0.1:3002/runshell",
+            contentType: 'application/json',
+            data: get_data,
+            success: function (response) {
+                const filename = response.filename;
+                window.open('http://127.0.0.1:3002/download');
+            }
+        });
+
+        // var xhr = new XMLHttpRequest();
+        // const url = "http://127.0.0.1:3002/runshell";
+        // xhr.open('GET', url, true);
+        //
+        // xhr.onreadystatechange = function () {
+        //     if(xhr.readyState) {
+        //         console.log(xhr);
+        //     }
+        // };
+        // xhr.send();
+
+        // window.open('http://127.0.0.1:3002/runshell');
+    },
+
+    processRequest: function (e) {
+        console.log(e);
     },
 
     handleChange: function (event) {
@@ -51,8 +84,8 @@ const CrimeWindow = createReactClass({
         });
     },
 
-    onChange() {
-
+    onChange(p) {
+        this.state.modelSelected = p;
     },
 
     componentWillMount() {
@@ -160,7 +193,7 @@ const CrimeWindow = createReactClass({
                                     <FormControl
                                         {...inputProps}
                                         type='text'
-                                        placeholder='No Model'
+                                        placeholder={modelNames[0]}
                                     />
                                 }
                             </Combobox>
